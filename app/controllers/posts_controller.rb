@@ -36,9 +36,18 @@ class PostsController < ApplicationController
     end
   end
 
+  def latest_posts
+     @posts = Post.where(is_latest: true)
+     if @posts
+       render json: @posts
+     else
+       render json: @posts.errors, status: :unprocessable_entity
+     end
+  end
+
   private
 
   def post_params
-    params.require(:post).permit(:title, :author)
+    params.require(:post).permit(:title, :author, :is_latest, :published, :content)
   end
 end
