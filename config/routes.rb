@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   Rails.application.routes.draw do
-    resources :posts
+    resources :posts do
+      collection do
+        get "latest", to: "posts#latest_posts"
+      end
+    end
   end
 end
