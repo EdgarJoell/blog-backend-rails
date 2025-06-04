@@ -18,4 +18,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  Rails.application.routes.draw do
+    resources :authors
+  end
 end
