@@ -1,16 +1,20 @@
 class PostsController < ApplicationController
   def index
     @posts = Post.all
-    render json: @posts
+    render json: @posts, status: 200
   end
 
   def show
-    @post = Post.find(params[:id])
-    render json: @post
+    @post = Post.find_by(id: params[:id])
+
+    return render json: { error: "Post not found" }, status: 404 if @post.nil?
+
+    render json: @post, status: 200
   end
 
   def create
     @post = Post.new(post_params)
+
     if @post.save
       render json: @post, status: 201
     else
@@ -19,10 +23,11 @@ class PostsController < ApplicationController
   end
 
   def update
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id])
 
-    if @post
-      @post.update(post_params)
+    return render json: { error: "Could not find a record with this ID" }, status: 404 if @post.nil?
+
+    if @post.update(post_params)
       render json: @post, status: 201
     else
       render json: @post.errors, status: :unprocessable_entity
@@ -30,9 +35,14 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:id])
-    if @post
-      @post.destroy
+    @post = Post.find_by(id: params[:id])
+
+    return render json: { error: "Could not find a record with this ID" }, status: 404 if @post.nil?
+
+    if @post.destroy
+      head 204
+    else
+      render json: { error: "Could not delete the record. Please try again soon." }, status: :unprocessable_entity
     end
   end
 
