@@ -45,8 +45,10 @@ class AuthorsController < ApplicationController
       render json: { message: "There was no record found with this ID" }, status: 404
     end
 
-    unless @author.destroy
-      render json: { message: "Could not delete this record. Please try again." }, status: :unprocessable_entity
+    if @author.destroy
+      render status: 204
+    else
+      render json: { error: "Could not delete the record. Please try again soon." }, status: :unprocessable_entity
     end
   end
 
