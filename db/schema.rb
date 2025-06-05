@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_04_004544) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_05_192429) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -33,7 +33,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_004544) do
 
   create_table "posts", force: :cascade do |t|
     t.string "title", null: false
-    t.string "author", null: false
     t.string "content"
     t.boolean "published", default: false, null: false
     t.boolean "is_latest", default: true, null: false
