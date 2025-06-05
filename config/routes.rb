@@ -22,4 +22,8 @@ Rails.application.routes.draw do
   Rails.application.routes.draw do
     resources :authors
   end
+
+  Rails.application.routes.draw do
+    resources :tags
+  end
 end
