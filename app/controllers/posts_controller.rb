@@ -13,10 +13,18 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
+    tag_ids = params[:post][:tags].map(&:to_i).uniq
+    @post = Post.new(post_params.except(:tags))
 
     if @post.save
-      render json: @post, status: 201
+      tags = Tag.where(id: tag_ids)
+
+      if tags.size != tag_ids.size
+        return render json: { error: "One or more tag IDs are invalid" }, status: :unprocessable_entity
+      end
+
+      @post.tags = tags
+      render json: @post, include: :tags, status: :created
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -58,6 +66,6 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :author, :is_latest, :published, :content)
+    params.require(:post).permit(:title, :is_latest, :published, :content, :author_id, tags: [])
   end
 end
