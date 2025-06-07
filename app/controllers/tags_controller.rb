@@ -17,9 +17,9 @@ class TagsController < ApplicationController
 
     if @tag.save
       render json: @tag, status: :created
+    else
+      render json: { error: "Tag could not be created." }, status: :bad_request
     end
-
-    render json: { error: "Tag could not be created." }, status: :bad_request
   end
 
   def update
@@ -29,9 +29,9 @@ class TagsController < ApplicationController
 
     if @tag.update(post_params)
       render json: @tag, status: :ok
+    else
+      render json: { error: "Tag could not be updated." }, status: :bad_request
     end
-
-    render json: { error: "Tag could not be updated." }, status: :bad_request
   end
 
   def destroy
